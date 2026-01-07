@@ -3,6 +3,8 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MenuCategoryController;
 use App\Http\Controllers\MenuItemController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TableAreaController;
 use App\Http\Controllers\TableController;
@@ -41,6 +43,17 @@ Route::middleware(['auth', 'verified', 'outlet.access'])->group(function () {
     Route::post('tables/{table}/status', [TableController::class, 'updateStatus'])->name('tables.update-status');
     Route::post('tables/{table}/regenerate-qr', [TableController::class, 'regenerateQr'])->name('tables.regenerate-qr');
     Route::get('tables/{table}/download-qr', [TableController::class, 'downloadQr'])->name('tables.download-qr');
+
+    // Orders
+    Route::get('orders/create/menu', [OrderController::class, 'selectMenu'])->name('orders.select-menu');
+    Route::get('orders/create/menu/{table}', [OrderController::class, 'selectMenu'])->name('orders.select-menu.table');
+    Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
+    Route::get('orders/{order}/receipt', [OrderController::class, 'receipt'])->name('orders.receipt');
+    Route::resource('orders', OrderController::class);
+
+    // Payments
+    Route::get('orders/{order}/payment', [PaymentController::class, 'create'])->name('payments.create');
+    Route::post('orders/{order}/payment', [PaymentController::class, 'store'])->name('payments.store');
 });
 
 require __DIR__.'/auth.php';

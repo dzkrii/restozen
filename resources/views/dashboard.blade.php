@@ -33,47 +33,47 @@
 
     {{-- Stats Grid --}}
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        {{-- Total Menu --}}
+        {{-- Today's Orders --}}
         <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
             <div class="flex items-center gap-4">
                 <div class="flex-shrink-0 w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center">
                     <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                     </svg>
                 </div>
                 <div>
-                    <p class="text-2xl font-bold text-gray-900">{{ $stats['total_menu'] ?? 0 }}</p>
-                    <p class="text-sm text-gray-500">Total Menu</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ $stats['today_orders'] ?? 0 }}</p>
+                    <p class="text-sm text-gray-500">Pesanan Hari Ini</p>
                 </div>
             </div>
         </div>
 
-        {{-- Total Categories --}}
+        {{-- Today's Revenue --}}
         <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
             <div class="flex items-center gap-4">
                 <div class="flex-shrink-0 w-12 h-12 bg-secondary-50 rounded-xl flex items-center justify-center">
                     <svg class="w-6 h-6 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
                 </div>
                 <div>
-                    <p class="text-2xl font-bold text-gray-900">{{ $stats['total_categories'] ?? 0 }}</p>
-                    <p class="text-sm text-gray-500">Kategori</p>
+                    <p class="text-2xl font-bold text-gray-900">Rp {{ number_format($stats['today_revenue'] ?? 0, 0, ',', '.') }}</p>
+                    <p class="text-sm text-gray-500">Omset Hari Ini</p>
                 </div>
             </div>
         </div>
 
-        {{-- Total Tables --}}
+        {{-- Pending Orders --}}
         <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
             <div class="flex items-center gap-4">
-                <div class="flex-shrink-0 w-12 h-12 bg-accent-50 rounded-xl flex items-center justify-center">
-                    <svg class="w-6 h-6 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
+                <div class="flex-shrink-0 w-12 h-12 bg-warning-50 rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-warning-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
                 </div>
                 <div>
-                    <p class="text-2xl font-bold text-gray-900">{{ $stats['total_tables'] ?? 0 }}</p>
-                    <p class="text-sm text-gray-500">Total Meja</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ $stats['pending_orders'] ?? 0 }}</p>
+                    <p class="text-sm text-gray-500">Pesanan Aktif</p>
                 </div>
             </div>
         </div>
@@ -81,9 +81,9 @@
         {{-- Available Tables --}}
         <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
             <div class="flex items-center gap-4">
-                <div class="flex-shrink-0 w-12 h-12 bg-warning-50 rounded-xl flex items-center justify-center">
-                    <svg class="w-6 h-6 text-warning-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                <div class="flex-shrink-0 w-12 h-12 bg-accent-50 rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
                     </svg>
                 </div>
                 <div>
@@ -104,45 +104,44 @@
                 </div>
                 <div class="p-6">
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <a href="{{ route('menu-items.index') }}"
-                           class="flex flex-col items-center p-4 bg-gray-50 rounded-xl hover:bg-primary-50 hover:text-primary-700 transition-colors group">
+                        <a href="{{ route('orders.create') }}"
+                           class="flex flex-col items-center p-4 bg-primary-50 rounded-xl hover:bg-primary-100 hover:text-primary-800 transition-colors group">
                             <div class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-3 group-hover:shadow-md transition-shadow">
-                                <svg class="w-6 h-6 text-gray-600 group-hover:text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                <svg class="w-6 h-6 text-primary-600 group-hover:text-primary-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                                 </svg>
                             </div>
-                            <span class="text-sm font-medium text-gray-700 group-hover:text-primary-700">Daftar Menu</span>
+                            <span class="text-sm font-bold text-primary-700 group-hover:text-primary-800">Pesanan Baru</span>
                         </a>
 
-                        <a href="{{ route('tables.index') }}"
+                        <a href="{{ route('orders.index') }}"
                            class="flex flex-col items-center p-4 bg-gray-50 rounded-xl hover:bg-secondary-50 hover:text-secondary-700 transition-colors group">
                             <div class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-3 group-hover:shadow-md transition-shadow">
                                 <svg class="w-6 h-6 text-gray-600 group-hover:text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                                 </svg>
                             </div>
-                            <span class="text-sm font-medium text-gray-700 group-hover:text-secondary-700">Denah Meja</span>
+                            <span class="text-sm font-medium text-gray-700 group-hover:text-secondary-700">Riwayat Pesanan</span>
                         </a>
 
-                        <a href="{{ route('menu-categories.index') }}"
+                        <a href="{{ route('tables.index') }}"
                            class="flex flex-col items-center p-4 bg-gray-50 rounded-xl hover:bg-accent-50 hover:text-accent-700 transition-colors group">
                             <div class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-3 group-hover:shadow-md transition-shadow">
                                 <svg class="w-6 h-6 text-gray-600 group-hover:text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
                                 </svg>
                             </div>
-                            <span class="text-sm font-medium text-gray-700 group-hover:text-accent-700">Kategori</span>
+                            <span class="text-sm font-medium text-gray-700 group-hover:text-accent-700">Denah Meja</span>
                         </a>
 
-                        <a href="{{ route('table-areas.index') }}"
+                        <a href="{{ route('menu-items.index') }}"
                            class="flex flex-col items-center p-4 bg-gray-50 rounded-xl hover:bg-warning-50 hover:text-warning-700 transition-colors group">
                             <div class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-3 group-hover:shadow-md transition-shadow">
                                 <svg class="w-6 h-6 text-gray-600 group-hover:text-warning-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                                 </svg>
                             </div>
-                            <span class="text-sm font-medium text-gray-700 group-hover:text-warning-700">Area Meja</span>
+                            <span class="text-sm font-medium text-gray-700 group-hover:text-warning-700">Daftar Menu</span>
                         </a>
                     </div>
                 </div>
