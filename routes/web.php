@@ -7,6 +7,7 @@ use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TableAreaController;
 use App\Http\Controllers\TableController;
 use Illuminate\Support\Facades\Route;
@@ -62,6 +63,15 @@ Route::middleware(['auth', 'verified', 'outlet.access'])->group(function () {
     Route::get('/kitchen/api/check-new-orders', [KitchenController::class, 'checkNewOrders'])->name('kitchen.check-new');
     Route::patch('/kitchen/items/{item}', [KitchenController::class, 'updateItemStatus'])->name('kitchen.update-item');
     Route::post('/kitchen/orders/{order}/ready', [KitchenController::class, 'markOrderReady'])->name('kitchen.mark-ready');
+
+    // Financial Reports
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/', [ReportController::class, 'index'])->name('index');
+        Route::get('/sales', [ReportController::class, 'sales'])->name('sales');
+        Route::get('/payment-methods', [ReportController::class, 'paymentMethods'])->name('payment-methods');
+        Route::get('/top-selling', [ReportController::class, 'topSelling'])->name('top-selling');
+        Route::get('/export-pdf', [ReportController::class, 'exportPdf'])->name('export-pdf');
+    });
 
     // Employee Management
     Route::resource('employees', \App\Http\Controllers\EmployeeController::class)->except(['show']);
