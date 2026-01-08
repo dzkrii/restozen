@@ -19,7 +19,12 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $outletId = Auth::user()->current_outlet_id;
+        $outlet = Auth::user()->current_outlet;
+        $outletId = $outlet ? $outlet->id : null;
+        
+        if (!$outletId) {
+             return view('orders.index', ['orders' => collect([]), 'todayOrders' => 0, 'todayRevenue' => 0, 'pendingCount' => 0]);
+        }
 
         $query = Order::where('outlet_id', $outletId)
             ->with(['table', 'items', 'user'])
@@ -62,7 +67,10 @@ class OrderController extends Controller
      */
     public function create(Request $request)
     {
-        $outletId = Auth::user()->current_outlet_id;
+        $outlet = Auth::user()->current_outlet;
+        $outletId = $outlet ? $outlet->id : null;
+
+        if (!$outletId) abort(403);
 
         // Get table areas with tables
         $tableAreas = TableArea::where('outlet_id', $outletId)
@@ -90,7 +98,10 @@ class OrderController extends Controller
      */
     public function selectMenu(Request $request, Table $table = null)
     {
-        $outletId = Auth::user()->current_outlet_id;
+        $outlet = Auth::user()->current_outlet;
+        $outletId = $outlet ? $outlet->id : null;
+
+        if (!$outletId) abort(403);
 
         // Verify table belongs to outlet
         if ($table && $table->outlet_id !== $outletId) {
@@ -131,7 +142,10 @@ class OrderController extends Controller
             'items.*.notes' => 'nullable|string',
         ]);
 
-        $outletId = Auth::user()->current_outlet_id;
+        $outlet = Auth::user()->current_outlet;
+        $outletId = $outlet ? $outlet->id : null;
+
+        if (!$outletId) abort(403);
 
         try {
             DB::beginTransaction();
@@ -184,7 +198,10 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        $outletId = Auth::user()->current_outlet_id;
+        $outlet = Auth::user()->current_outlet;
+        $outletId = $outlet ? $outlet->id : null;
+
+        if (!$outletId) abort(403);
 
         if ($order->outlet_id !== $outletId) {
             abort(403);
@@ -200,7 +217,10 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        $outletId = Auth::user()->current_outlet_id;
+        $outlet = Auth::user()->current_outlet;
+        $outletId = $outlet ? $outlet->id : null;
+
+        if (!$outletId) abort(403);
 
         if ($order->outlet_id !== $outletId) {
             abort(403);
@@ -232,7 +252,10 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        $outletId = Auth::user()->current_outlet_id;
+        $outlet = Auth::user()->current_outlet;
+        $outletId = $outlet ? $outlet->id : null;
+
+        if (!$outletId) abort(403);
 
         if ($order->outlet_id !== $outletId) {
             abort(403);
@@ -292,7 +315,10 @@ class OrderController extends Controller
      */
     public function updateStatus(Request $request, Order $order)
     {
-        $outletId = Auth::user()->current_outlet_id;
+        $outlet = Auth::user()->current_outlet;
+        $outletId = $outlet ? $outlet->id : null;
+
+        if (!$outletId) abort(403);
 
         if ($order->outlet_id !== $outletId) {
             return response()->json(['error' => 'Unauthorized'], 403);
@@ -329,7 +355,10 @@ class OrderController extends Controller
      */
     public function receipt(Order $order)
     {
-        $outletId = Auth::user()->current_outlet_id;
+        $outlet = Auth::user()->current_outlet;
+        $outletId = $outlet ? $outlet->id : null;
+
+        if (!$outletId) abort(403);
 
         if ($order->outlet_id !== $outletId) {
             abort(403);
@@ -345,7 +374,10 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        $outletId = Auth::user()->current_outlet_id;
+        $outlet = Auth::user()->current_outlet;
+        $outletId = $outlet ? $outlet->id : null;
+
+        if (!$outletId) abort(403);
 
         if ($order->outlet_id !== $outletId) {
             abort(403);

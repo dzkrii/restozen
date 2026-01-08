@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KitchenController;
 use App\Http\Controllers\MenuCategoryController;
 use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\OrderController;
@@ -54,6 +55,11 @@ Route::middleware(['auth', 'verified', 'outlet.access'])->group(function () {
     // Payments
     Route::get('orders/{order}/payment', [PaymentController::class, 'create'])->name('payments.create');
     Route::post('orders/{order}/payment', [PaymentController::class, 'store'])->name('payments.store');
+
+    // Kitchen Display System
+    Route::get('/kitchen', [KitchenController::class, 'index'])->name('kitchen.index');
+    Route::patch('/kitchen/items/{item}', [KitchenController::class, 'updateItemStatus'])->name('kitchen.update-item');
+    Route::post('/kitchen/orders/{order}/ready', [KitchenController::class, 'markOrderReady'])->name('kitchen.mark-ready');
 });
 
 require __DIR__.'/auth.php';

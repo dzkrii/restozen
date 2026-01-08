@@ -15,7 +15,10 @@ class PaymentController extends Controller
      */
     public function create(Order $order)
     {
-        $outletId = Auth::user()->current_outlet_id;
+        $outlet = Auth::user()->current_outlet;
+        $outletId = $outlet ? $outlet->id : null;
+
+        if (!$outletId) abort(403);
 
         if ($order->outlet_id !== $outletId) {
             abort(403);
@@ -41,7 +44,10 @@ class PaymentController extends Controller
      */
     public function store(Request $request, Order $order)
     {
-        $outletId = Auth::user()->current_outlet_id;
+        $outlet = Auth::user()->current_outlet;
+        $outletId = $outlet ? $outlet->id : null;
+
+        if (!$outletId) abort(403);
 
         if ($order->outlet_id !== $outletId) {
             abort(403);
