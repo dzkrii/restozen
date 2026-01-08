@@ -11,7 +11,7 @@
     <div class="flex items-center justify-between h-16 px-4 border-b border-gray-800">
         <a href="{{ route('dashboard') }}" class="flex items-center gap-3">
             <div class="flex-shrink-0" :class="{ 'w-10': !sidebarOpen }">
-                <img src="{{ asset('images/logo-premium-nobg-nobg.png') }}" alt="RestoZen" class="h-8 w-auto brightness-0 invert">
+                <img src="{{ asset('images/logo-premium-nobg.png') }}" alt="RestoZen" class="h-8 w-auto brightness-0 invert">
             </div>
         </a>
         <button @click="sidebarOpen = !sidebarOpen" class="hidden lg:flex p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg">
