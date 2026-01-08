@@ -10,12 +10,9 @@
     {{-- Logo Header --}}
     <div class="flex items-center justify-between h-16 px-4 border-b border-gray-800">
         <a href="{{ route('dashboard') }}" class="flex items-center gap-3">
-            <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                </svg>
+            <div class="flex-shrink-0" :class="{ 'w-10': !sidebarOpen }">
+                <img src="{{ asset('images/logo-premium.png') }}" alt="RestoZen" class="h-8 w-auto brightness-0 invert">
             </div>
-            <span class="text-xl font-bold text-white" x-show="sidebarOpen" x-transition>Restozen</span>
         </a>
         <button @click="sidebarOpen = !sidebarOpen" class="hidden lg:flex p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg">
             <svg class="w-5 h-5 transition-transform" :class="{ 'rotate-180': !sidebarOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24">

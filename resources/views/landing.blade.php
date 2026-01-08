@@ -23,13 +23,8 @@
 
         <!-- Navbar (updated to match new hero style) -->
         <nav class="z-50 flex items-center justify-between w-full py-4 px-6 md:px-16 lg:px-24 xl:px-32 backdrop-blur-md bg-white/80 text-neutral-800 text-sm sticky top-0 border-b border-neutral-100">
-            <a href="/" class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                    </svg>
-                </div>
-                <span class="text-xl font-bold text-neutral-900">Resto<span class="text-primary-500">Zen</span></span>
+            <a href="/" class="flex items-center gap-3">
+                <img src="{{ asset('images/logo-premium.png') }}" alt="RestoZen Logo" class="h-8 w-auto">
             </a>
 
             <div class="hidden md:flex items-center gap-8 transition duration-500">
@@ -451,12 +446,7 @@
             <div class="grid md:grid-cols-4 gap-12 mb-12">
                 <div class="md:col-span-2">
                     <div class="flex items-center gap-2 mb-4">
-                        <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                            </svg>
-                        </div>
-                        <span class="text-xl font-bold text-white">Resto<span class="text-primary-500">Zen</span></span>
+                        <img src="{{ asset('images/logo-premium.png') }}" alt="RestoZen Logo" class="h-8 w-auto brightness-0 invert">
                     </div>
                     <p class="text-neutral-400 mb-6 max-w-sm">Sistem POS modern untuk restoran Indonesia. Kelola bisnis lebih efisien dengan teknologi terkini.</p>
                     <div class="flex gap-4">
