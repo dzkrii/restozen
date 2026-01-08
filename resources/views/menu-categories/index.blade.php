@@ -1,126 +1,128 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Kategori Menu') }}
-            </h2>
-            <a href="{{ route('menu-categories.create') }}"
-               class="inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700 focus:bg-primary-700 active:bg-primary-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                </svg>
-                Tambah Kategori
-            </a>
+    <x-slot name="title">Kategori Menu</x-slot>
+
+    <!-- Page Header -->
+    <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <h2 class="text-xl font-semibold text-gray-800 dark:text-white/90">Kategori Menu</h2>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Kelola kategori untuk mengelompokkan menu</p>
         </div>
-    </x-slot>
+        <x-ui.button href="{{ route('menu-categories.create') }}" variant="primary">
+            <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Tambah Kategori
+        </x-ui.button>
+    </div>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            {{-- Flash Messages --}}
-            @if (session('success'))
-                <div class="mb-4 rounded-lg bg-secondary-50 p-4 text-sm text-secondary-800 border border-secondary-200" role="alert">
-                    <span class="font-medium">Berhasil!</span> {{ session('success') }}
-                </div>
-            @endif
+    <!-- Flash Messages -->
+    @if (session('success'))
+        <x-ui.alert variant="success">
+            <span class="font-medium">Berhasil!</span> {{ session('success') }}
+        </x-ui.alert>
+    @endif
 
-            @if (session('error'))
-                <div class="mb-4 rounded-lg bg-primary-50 p-4 text-sm text-primary-800 border border-primary-200" role="alert">
-                    <span class="font-medium">Error!</span> {{ session('error') }}
-                </div>
-            @endif
+    @if (session('error'))
+        <x-ui.alert variant="error">
+            <span class="font-medium">Error!</span> {{ session('error') }}
+        </x-ui.alert>
+    @endif
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6">
-                    @if ($categories->isEmpty())
-                        <div class="text-center py-12">
-                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                            </svg>
-                            <h3 class="mt-2 text-sm font-semibold text-gray-900">Belum ada kategori</h3>
-                            <p class="mt-1 text-sm text-gray-500">Mulai dengan menambahkan kategori menu pertama Anda.</p>
-                            <div class="mt-6">
-                                <a href="{{ route('menu-categories.create') }}"
-                                   class="inline-flex items-center rounded-md bg-primary-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500">
-                                    <svg class="-ml-0.5 mr-1.5 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                                    </svg>
-                                    Tambah Kategori
-                                </a>
-                            </div>
-                        </div>
-                    @else
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Urutan
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Kategori
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Jumlah Menu
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Status
-                                        </th>
-                                        <th scope="col" class="relative px-6 py-3">
-                                            <span class="sr-only">Actions</span>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    @foreach ($categories as $category)
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                {{ $category->sort_order }}
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="flex items-center">
-                                                    <span class="text-2xl mr-3">{{ $category->icon ?? '📁' }}</span>
-                                                    <div>
-                                                        <div class="text-sm font-medium text-gray-900">{{ $category->name }}</div>
-                                                        <div class="text-sm text-gray-500">{{ $category->slug }}</div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                                    {{ $category->menu_items_count }} menu
-                                                </span>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                @if ($category->is_active)
-                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary-100 text-secondary-800">
-                                                        Aktif
-                                                    </span>
-                                                @else
-                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                                        Nonaktif
-                                                    </span>
-                                                @endif
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <div class="flex items-center justify-end gap-2">
-                                                    <a href="{{ route('menu-categories.edit', $category) }}"
-                                                       class="text-primary-600 hover:text-primary-900">Edit</a>
-                                                    <form action="{{ route('menu-categories.destroy', $category) }}" method="POST"
-                                                          onsubmit="return confirm('Yakin ingin menghapus kategori ini?')">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @endif
+    <!-- Table Card -->
+    <div class="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+        @if ($categories->isEmpty())
+            <!-- Empty State -->
+            <div class="flex flex-col items-center justify-center py-16 px-4">
+                <div class="flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800">
+                    <svg class="size-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                    </svg>
                 </div>
+                <h3 class="mt-4 text-base font-semibold text-gray-800 dark:text-white/90">Belum ada kategori</h3>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Mulai dengan menambahkan kategori menu pertama Anda.</p>
+                <x-ui.button href="{{ route('menu-categories.create') }}" variant="primary" class="mt-6">
+                    <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Tambah Kategori
+                </x-ui.button>
             </div>
-        </div>
+        @else
+            <!-- Table -->
+            <div class="max-w-full overflow-x-auto">
+                <table class="w-full min-w-[640px]">
+                    <thead>
+                        <tr class="border-b border-gray-100 dark:border-gray-800">
+                            <th class="px-5 py-3 text-left sm:px-6">
+                                <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Urutan</p>
+                            </th>
+                            <th class="px-5 py-3 text-left sm:px-6">
+                                <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Kategori</p>
+                            </th>
+                            <th class="px-5 py-3 text-left sm:px-6">
+                                <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Jumlah Menu</p>
+                            </th>
+                            <th class="px-5 py-3 text-left sm:px-6">
+                                <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Status</p>
+                            </th>
+                            <th class="px-5 py-3 text-right sm:px-6">
+                                <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">Aksi</p>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($categories as $category)
+                            <tr class="border-b border-gray-100 last:border-b-0 dark:border-gray-800">
+                                <td class="px-5 py-4 sm:px-6">
+                                    <span class="inline-flex items-center justify-center h-8 w-8 rounded-lg bg-gray-100 text-sm font-medium text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+                                        {{ $category->sort_order }}
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-2xl">{{ $category->icon ?? '📁' }}</span>
+                                        <div>
+                                            <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">{{ $category->name }}</p>
+                                            <p class="text-gray-500 text-theme-xs dark:text-gray-400">{{ $category->slug }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <x-ui.badge>{{ $category->menu_items_count }} menu</x-ui.badge>
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    @if ($category->is_active)
+                                        <x-ui.badge variant="success">Aktif</x-ui.badge>
+                                    @else
+                                        <x-ui.badge>Nonaktif</x-ui.badge>
+                                    @endif
+                                </td>
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <x-ui.button href="{{ route('menu-categories.edit', $category) }}" variant="ghost" size="sm">
+                                            <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                            </svg>
+                                            Edit
+                                        </x-ui.button>
+                                        <form action="{{ route('menu-categories.destroy', $category) }}" method="POST"
+                                            onsubmit="return confirm('Yakin ingin menghapus kategori ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <x-ui.button type="submit" variant="ghost" size="sm" class="text-error-600 hover:bg-error-50 dark:text-error-400 dark:hover:bg-error-500/10">
+                                                <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                </svg>
+                                                Hapus
+                                            </x-ui.button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
     </div>
 </x-app-layout>
