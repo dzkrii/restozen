@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Restozen') }} - Kitchen</title>
+    <title>{{ config('app.name', 'Restozen') }} - Kitchen Display</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -19,18 +19,21 @@
         <source src="{{ asset('sounds/notification.mp3') }}" type="audio/mpeg">
     </audio>
 </head>
-<body class="bg-gray-100 font-sans antialiased text-gray-900">
+<body class="bg-gray-100 font-sans antialiased text-gray-900 dark:bg-gray-950 dark:text-white">
     <div class="min-h-screen flex flex-col">
         <!-- Header -->
-        <header class="bg-white shadow-sm border-b border-gray-200 px-6 py-4 flex items-center justify-between z-10">
+        <header class="bg-white shadow-sm border-b border-gray-200 px-6 py-4 flex items-center justify-between z-10 dark:bg-gray-900 dark:border-gray-800">
             <div class="flex items-center gap-4">
-                <a href="{{ route('dashboard') }}" class="text-gray-500 hover:text-gray-700">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <a href="{{ route('dashboard') }}" class="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:border-gray-800 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white">
+                    <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                     </svg>
                 </a>
-                <h1 class="text-2xl font-bold text-gray-800">Sistem Tampilan Dapur</h1>
-                <span class="bg-primary-100 text-primary-800 text-sm font-medium px-2.5 py-0.5 rounded-full">
+                <div>
+                    <h1 class="text-xl font-bold text-gray-800 dark:text-white/90">Kitchen Display System</h1>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Kelola pesanan masuk</p>
+                </div>
+                <span class="inline-flex items-center rounded-full bg-brand-50 px-3 py-1 text-sm font-medium text-brand-700 dark:bg-brand-500/15 dark:text-brand-400">
                     {{ $orders->count() }} Pesanan Aktif
                 </span>
 
@@ -38,7 +41,7 @@
                 <span 
                     x-show="newOrdersCount > 0"
                     x-transition
-                    class="bg-accent-500 text-white text-sm font-bold px-3 py-1 rounded-full animate-bounce">
+                    class="inline-flex items-center rounded-full bg-success-500 px-3 py-1 text-sm font-bold text-white animate-bounce">
                     +<span x-text="newOrdersCount"></span> Baru!
                 </span>
             </div>
@@ -47,21 +50,21 @@
                 <!-- Sound Toggle -->
                 <button 
                     @click="toggleSound"
-                    :class="soundEnabled ? 'bg-secondary-100 text-secondary-700' : 'bg-gray-100 text-gray-500'"
-                    class="px-3 py-2 rounded-lg font-medium flex items-center gap-2 hover:opacity-80 transition-all">
-                    <svg x-show="soundEnabled" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    :class="soundEnabled ? 'bg-success-50 text-success-700 dark:bg-success-500/15 dark:text-success-400' : 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400'"
+                    class="px-4 py-2.5 rounded-lg font-medium flex items-center gap-2 hover:opacity-80 transition-all">
+                    <svg x-show="soundEnabled" class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.586A2 2 0 014 14V10a2 2 0 011-1.732l7-3.5a1 1 0 011.5.866v13.732a1 1 0 01-1.5.866l-7-3.5z"/>
                     </svg>
-                    <svg x-show="!soundEnabled" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg x-show="!soundEnabled" class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15.586A2 2 0 014 14V10a2 2 0 011-1.732l7-3.5a1 1 0 011.5.866v13.732a1 1 0 01-1.5.866l-7-3.5zM17 12h6"/>
                     </svg>
                     <span x-text="soundEnabled ? 'Suara: ON' : 'Suara: OFF'"></span>
                 </button>
 
-                <div id="clock" class="text-xl font-mono text-gray-600 font-bold"></div>
+                <div id="clock" class="text-xl font-mono text-gray-600 dark:text-gray-400 font-bold"></div>
                 
-                <button onclick="window.location.reload()" class="btn-secondary flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button onclick="window.location.reload()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300">
+                    <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                     </svg>
                     Segarkan
@@ -72,21 +75,20 @@
         <!-- Main Content -->
         <main class="flex-1 p-6 overflow-y-auto">
             @if(session('success'))
-                <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded relative" role="alert">
+                <div class="mb-4 rounded-xl border border-success-200 bg-success-50 px-4 py-3 text-success-700 dark:border-success-500/30 dark:bg-success-500/10 dark:text-success-400" role="alert">
                     <span class="block sm:inline">{{ session('success') }}</span>
-                    <span class="absolute top-0 bottom-0 right-0 px-4 py-3" onclick="this.parentElement.remove();">
-                        <svg class="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
-                    </span>
                 </div>
             @endif
 
             @if($orders->isEmpty())
-                <div class="flex flex-col items-center justify-center h-full text-gray-400">
-                    <svg class="w-24 h-24 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
-                    </svg>
-                    <p class="text-xl font-medium">Tidak ada pesanan aktif</p>
-                    <p class="text-sm">Menunggu pesanan baru masuk!</p>
+                <div class="flex flex-col items-center justify-center h-96 text-gray-400 dark:text-gray-500">
+                    <div class="flex h-24 w-24 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
+                        <svg class="size-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                        </svg>
+                    </div>
+                    <p class="text-xl font-medium text-gray-600 dark:text-gray-400">Tidak ada pesanan aktif</p>
+                    <p class="text-sm mt-1">Menunggu pesanan baru masuk!</p>
                 </div>
             @else
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
