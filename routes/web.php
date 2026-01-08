@@ -62,6 +62,13 @@ Route::middleware(['auth', 'verified', 'outlet.access'])->group(function () {
     Route::get('/kitchen/api/check-new-orders', [KitchenController::class, 'checkNewOrders'])->name('kitchen.check-new');
     Route::patch('/kitchen/items/{item}', [KitchenController::class, 'updateItemStatus'])->name('kitchen.update-item');
     Route::post('/kitchen/orders/{order}/ready', [KitchenController::class, 'markOrderReady'])->name('kitchen.mark-ready');
+
+    // Employee Management
+    Route::resource('employees', \App\Http\Controllers\EmployeeController::class)->except(['show']);
+    Route::post('employees/{employee}/toggle-status', [\App\Http\Controllers\EmployeeController::class, 'toggleStatus'])
+        ->name('employees.toggle-status');
+    Route::post('employees/{employee}/reset-pin', [\App\Http\Controllers\EmployeeController::class, 'resetPin'])
+        ->name('employees.reset-pin');
 });
 
 // QR Ordering - Public Routes (No Auth Required)

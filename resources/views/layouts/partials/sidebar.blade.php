@@ -120,6 +120,27 @@
             </svg>
             <span x-show="sidebarOpen" x-transition class="font-medium">Riwayat Pesanan</span>
         </a>
+
+        {{-- Management Section --}}
+        <div class="pt-4" x-show="sidebarOpen">
+            <p class="px-3 mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Management</p>
+        </div>
+
+        <a href="{{ route('kitchen.index') }}"
+           class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors {{ request()->routeIs('kitchen.*') ? 'bg-primary-500/20 text-primary-400' : 'text-gray-400 hover:bg-gray-800 hover:text-white' }}">
+            <svg class="flex-shrink-0 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+            </svg>
+            <span x-show="sidebarOpen" x-transition class="font-medium">Kitchen Display</span>
+        </a>
+
+        <a href="{{ route('employees.index') }}"
+           class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors {{ request()->routeIs('employees.*') ? 'bg-primary-500/20 text-primary-400' : 'text-gray-400 hover:bg-gray-800 hover:text-white' }}">
+            <svg class="flex-shrink-0 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+            <span x-show="sidebarOpen" x-transition class="font-medium">Karyawan</span>
+        </a>
     </nav>
 
     {{-- User Section at Bottom --}}
