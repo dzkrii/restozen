@@ -15,58 +15,58 @@
 </head>
 <body class="bg-white font-sans antialiased">
 
+    <!-- Announcement Banner -->
+    <div class="w-full py-2.5 font-medium text-sm text-white text-center bg-gradient-to-r from-primary-600 via-primary-500 to-accent-400">
+        <p><span class="px-3 py-1 rounded-md text-primary-600 bg-white mr-2 font-semibold">PROMO</span>Coba RestoZen hari ini dan dapatkan diskon 20% untuk 3 bulan pertama!</p>
+    </div>
+
+    <!-- Navbar (updated to match new hero style) -->
+    <nav class="sticky top-0 z-[999] flex items-center w-full py-4 px-6 md:px-16 lg:px-24 xl:px-32 backdrop-blur-md bg-white/80 text-neutral-800 text-sm border-b border-neutral-100">
+        <a href="/" class="flex items-center gap-3">
+            <img src="{{ asset('images/logo-premium-nobg.png') }}" alt="RestoZen Logo" class="h-8 w-auto">
+        </a>
+
+        <!-- Menu always centered -->
+        <div class="hidden md:flex items-center gap-8 flex-1 justify-center transition duration-500">
+            <a href="#features" class="hover:text-primary-500 transition">Fitur</a>
+            <a href="#pricing" class="hover:text-primary-500 transition">Harga</a>
+            <a href="#contact" class="hover:text-primary-500 transition">Kontak</a>
+        </div>
+
+        <!-- Auth buttons always visible -->
+        <div class="hidden md:flex items-center gap-3">
+            <a href="{{ route('login') }}" class="hover:bg-neutral-100 transition px-6 py-2 border border-primary-500 text-primary-600 rounded-lg font-medium">
+                Masuk
+            </a>
+            @if (Route::has('register'))
+                <a href="{{ route('register') }}" class="px-6 py-2 bg-primary-500 hover:bg-primary-600 transition text-white rounded-lg font-medium">
+                    Daftar
+                </a>
+            @endif
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="open-menu" class="md:hidden active:scale-90 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
+        </button>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-navLinks" class="fixed inset-0 z-[100] bg-white/95 text-neutral-800 backdrop-blur flex flex-col items-center justify-center text-lg gap-8 md:hidden transition-transform duration-300 -translate-x-full">
+        <a href="#features" onclick="closeMenuHandler()">Fitur</a>
+        <a href="#pricing" onclick="closeMenuHandler()">Harga</a>
+        <a href="#contact" onclick="closeMenuHandler()">Kontak</a>
+        <a href="{{ route('login') }}" class="px-6 py-2 border border-primary-500 text-primary-600 rounded-lg">Masuk</a>
+        @if (Route::has('register'))
+            <a href="{{ route('register') }}" class="px-6 py-2 bg-primary-500 text-white rounded-lg">Daftar</a>
+        @endif
+        <button id="close-menu" class="active:ring-3 active:ring-primary-200 aspect-square size-10 p-1 items-center justify-center bg-neutral-100 hover:bg-neutral-200 transition text-black rounded-md flex">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+    </div>
+
     <!-- Hero Section -->
     <section class="flex flex-col items-center text-sm bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2260%22%20height%3D%2260%22%3E%3Cpath%20d%3D%22M0%200h60v60H0z%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M60%200v60M0%200h60%22%20stroke%3D%22%23f1f1f1%22%20stroke-width%3D%221%22%2F%3E%3C%2Fsvg%3E')] bg-repeat">
-        <!-- Announcement Banner -->
-        <div class="w-full py-2.5 font-medium text-sm text-white text-center bg-gradient-to-r from-primary-600 via-primary-500 to-accent-400">
-            <p><span class="px-3 py-1 rounded-md text-primary-600 bg-white mr-2 font-semibold">PROMO</span>Coba RestoZen hari ini dan dapatkan diskon 20% untuk 3 bulan pertama!</p>
-        </div>
-
-        <!-- Navbar (updated to match new hero style) -->
-        <nav class="sticky top-0 z-[999] flex items-center w-full py-4 px-6 md:px-16 lg:px-24 xl:px-32 backdrop-blur-md bg-white/80 text-neutral-800 text-sm border-b border-neutral-100">
-            <a href="/" class="flex items-center gap-3">
-                <img src="{{ asset('images/logo-premium-nobg.png') }}" alt="RestoZen Logo" class="h-8 w-auto">
-            </a>
-
-            <!-- Menu always centered -->
-            <div class="hidden md:flex items-center gap-8 flex-1 justify-center transition duration-500">
-                <a href="#features" class="hover:text-primary-500 transition">Fitur</a>
-                <a href="#pricing" class="hover:text-primary-500 transition">Harga</a>
-                <a href="#contact" class="hover:text-primary-500 transition">Kontak</a>
-            </div>
-
-            <!-- Auth buttons always visible -->
-            <div class="hidden md:flex items-center gap-3">
-                <a href="{{ route('login') }}" class="hover:bg-neutral-100 transition px-6 py-2 border border-primary-500 text-primary-600 rounded-lg font-medium">
-                    Masuk
-                </a>
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="px-6 py-2 bg-primary-500 hover:bg-primary-600 transition text-white rounded-lg font-medium">
-                        Daftar
-                    </a>
-                @endif
-            </div>
-
-            <!-- Mobile Menu Button -->
-            <button id="open-menu" class="md:hidden active:scale-90 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
-            </button>
-        </nav>
-
-        <!-- Mobile Navigation -->
-        <div id="mobile-navLinks" class="fixed inset-0 z-[100] bg-white/95 text-neutral-800 backdrop-blur flex flex-col items-center justify-center text-lg gap-8 md:hidden transition-transform duration-300 -translate-x-full">
-            <a href="#features" onclick="closeMenuHandler()">Fitur</a>
-            <a href="#pricing" onclick="closeMenuHandler()">Harga</a>
-            <a href="#contact" onclick="closeMenuHandler()">Kontak</a>
-            <a href="{{ route('login') }}" class="px-6 py-2 border border-primary-500 text-primary-600 rounded-lg">Masuk</a>
-            @if (Route::has('register'))
-                <a href="{{ route('register') }}" class="px-6 py-2 bg-primary-500 text-white rounded-lg">Daftar</a>
-            @endif
-            <button id="close-menu" class="active:ring-3 active:ring-primary-200 aspect-square size-10 p-1 items-center justify-center bg-neutral-100 hover:bg-neutral-200 transition text-black rounded-md flex">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-            </button>
-        </div>
-
         <!-- Hero Content -->
         <main class="flex flex-col items-center max-md:px-4 pb-20">
             <!-- Badge -->
@@ -439,7 +439,7 @@
             <div class="grid md:grid-cols-4 gap-12 mb-12">
                 <div class="md:col-span-2">
                     <div class="flex items-center gap-2 mb-4">
-                        <img src="{{ asset('images/logo-premium-nobg.png') }}" alt="RestoZen Logo" class="h-8 w-auto">
+                        <img src="{{ asset('images/logo-premium-nobg-white.png') }}" alt="RestoZen Logo" class="h-8 w-auto">
                     </div>
                     <p class="text-neutral-400 mb-6 max-w-sm">Sistem POS modern untuk restoran Indonesia. Kelola bisnis lebih efisien dengan teknologi terkini.</p>
                     <div class="flex gap-4">
