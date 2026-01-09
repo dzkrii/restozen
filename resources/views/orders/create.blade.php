@@ -36,13 +36,13 @@
                     </svg>
                     <span class="font-medium">Takeaway</span>
                 </a>
-                <a href="{{ route('orders.select-menu', ['type' => 'delivery']) }}"
+                <!-- <a href="{{ route('orders.select-menu', ['type' => 'delivery']) }}"
                     class="flex items-center gap-3 px-5 py-3 rounded-xl border-2 transition-all {{ $orderType === 'delivery' ? 'border-brand-500 bg-brand-50 text-brand-700 dark:bg-brand-500/10 dark:text-brand-400' : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600 dark:text-gray-300' }}">
                     <svg class="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/>
                     </svg>
                     <span class="font-medium">Delivery</span>
-                </a>
+                </a> -->
             </div>
         </div>
     </div>
