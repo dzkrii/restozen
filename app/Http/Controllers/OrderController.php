@@ -34,15 +34,35 @@ class OrderController extends Controller
              ]);
         }
 
-        // Determine view mode based on user capabilities (same logic as view)
+        // Determine view mode based on user capabilities
         $user = Auth::user();
         $userCapabilities = $outlet ? $user->capabilitiesAt($outlet) : [];
         $isWaiter = in_array('waiter', $userCapabilities);
         $isCashier = in_array('cashier', $userCapabilities);
         
-        // Default: cashier view if only has cashier (no waiter), otherwise waiter view
-        $defaultView = ($isCashier && !$isWaiter) ? 'cashier' : 'waiter';
-        $viewMode = $request->get('view', $defaultView);
+        // Determine default view based on capabilities
+        $capabilityDefault = ($isCashier && !$isWaiter) ? 'cashier' : 'waiter';
+        
+        // If view mode is explicitly set in request, save it to session
+        if ($request->has('view')) {
+            $viewMode = $request->get('view');
+            // Only save valid view modes that user has capability for
+            if (($viewMode === 'cashier' && $isCashier) || ($viewMode === 'waiter' && $isWaiter)) {
+                session(['orders_view_mode' => $viewMode]);
+            }
+        } else {
+            // Get from session, or use capability-based default
+            $viewMode = session('orders_view_mode', $capabilityDefault);
+            
+            // Validate that the saved view mode is still valid for user's capabilities
+            if ($viewMode === 'cashier' && !$isCashier) {
+                $viewMode = 'waiter';
+                session()->forget('orders_view_mode');
+            } elseif ($viewMode === 'waiter' && !$isWaiter) {
+                $viewMode = 'cashier';
+                session()->forget('orders_view_mode');
+            }
+        }
         
         $query = Order::where('outlet_id', $outletId)
             ->with(['table', 'items', 'user', 'payments'])

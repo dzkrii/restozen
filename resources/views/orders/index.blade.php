@@ -9,8 +9,15 @@
         $isCashier = in_array('cashier', $userCapabilities);
         $isKitchen = in_array('kitchen', $userCapabilities);
         
-        // Determine view mode based on query or capability
-        $viewMode = request('view', $isCashier && !$isWaiter ? 'cashier' : 'waiter');
+        // Determine capability-based default
+        $capabilityDefault = ($isCashier && !$isWaiter) ? 'cashier' : 'waiter';
+        
+        // Get view mode from request, session, or capability default
+        $viewMode = request('view', session('orders_view_mode', $capabilityDefault));
+        
+        // Validate view mode is allowed for user
+        if ($viewMode === 'cashier' && !$isCashier) $viewMode = 'waiter';
+        if ($viewMode === 'waiter' && !$isWaiter) $viewMode = 'cashier';
     @endphp
 
     <!-- Page Header -->
@@ -34,22 +41,30 @@
         <div class="flex items-center gap-2">
             {{-- View Mode Toggle (if user has both capabilities) --}}
             @if($isWaiter && $isCashier)
-                <div class="flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+                <div class="flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1" title="Mode tampilan tersimpan otomatis">
                     <a href="{{ route('orders.index', array_merge(request()->query(), ['view' => 'waiter'])) }}"
-                        class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {{ $viewMode === 'waiter' ? 'bg-white dark:bg-gray-700 text-brand-600 dark:text-brand-400 shadow-sm' : 'text-gray-600 dark:text-gray-400' }}">
-                        <span class="hidden sm:inline">Pelayan</span>
-                        <svg class="sm:hidden size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors {{ $viewMode === 'waiter' ? 'bg-white dark:bg-gray-700 text-brand-600 dark:text-brand-400 shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300' }}">
+                        <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                         </svg>
+                        <span class="hidden sm:inline">Pelayan</span>
                     </a>
                     <a href="{{ route('orders.index', array_merge(request()->query(), ['view' => 'cashier'])) }}"
-                        class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors {{ $viewMode === 'cashier' ? 'bg-white dark:bg-gray-700 text-brand-600 dark:text-brand-400 shadow-sm' : 'text-gray-600 dark:text-gray-400' }}">
-                        <span class="hidden sm:inline">Kasir</span>
-                        <svg class="sm:hidden size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors {{ $viewMode === 'cashier' ? 'bg-white dark:bg-gray-700 text-brand-600 dark:text-brand-400 shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300' }}">
+                        <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
                         </svg>
+                        <span class="hidden sm:inline">Kasir</span>
                     </a>
                 </div>
+            @elseif($isCashier && !$isWaiter)
+                {{-- Cashier-only indicator --}}
+                <span class="px-3 py-1.5 rounded-lg text-sm font-medium bg-success-50 text-success-700 dark:bg-success-500/15 dark:text-success-400">
+                    <svg class="size-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                    Mode Kasir
+                </span>
             @endif
 
             @if($isWaiter)
