@@ -146,28 +146,45 @@
             </div>
 
             <!-- Right Side - Branding -->
-            <div class="bg-brand-950 relative hidden h-full min-h-screen w-full items-center lg:flex lg:w-1/2 dark:bg-white/5">
-                <div class="z-1 flex w-full items-center justify-center">
-                    <!-- Grid Pattern -->
-                    <div class="absolute inset-0 opacity-10">
-                        <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="1"/>
-                                </pattern>
-                            </defs>
-                            <rect width="100%" height="100%" fill="url(#grid)" />
-                        </svg>
-                    </div>
-                    
-                    <div class="flex max-w-sm flex-col items-center px-8">
-                        <div class="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-white/10 backdrop-blur">
-                            <img src="{{ asset('images/logo-premium-nobg.png') }}" alt="MARUPOS" class="h-12 w-auto brightness-0 invert" />
+            <div class="relative hidden h-full min-h-screen w-full items-center bg-navy-950 lg:flex lg:w-1/2 overflow-hidden">
+                <!-- Background Image with Overlay -->
+                <div class="absolute inset-0">
+                    <img src="{{ asset('images/login-bg.png') }}" alt="Background" class="h-full w-full object-cover" />
+                    <div class="absolute inset-0 bg-navy-950/60 backdrop-blur-[1px]"></div>
+                    <div class="absolute inset-0 bg-linear-to-t from-navy-950 via-navy-950/40 to-transparent"></div>
+                </div>
+
+                <div class="z-10 flex w-full items-center justify-center p-12">
+                    <div class="flex max-w-lg flex-col items-center">
+                        <div class="mb-8 flex items-center justify-center">
+                            <img src="{{ asset('images/marupos-logo.png') }}" alt="MARUPOS" class="h-16 w-auto brightness-0 invert" />
                         </div>
-                        <h2 class="mb-4 text-2xl font-semibold text-white text-center">MARUPOS POS</h2>
-                        <p class="text-center text-gray-400 dark:text-white/60">
-                            Solusi Point of Sale modern untuk restoran & kafe. Kelola pesanan, meja, dan laporan dengan mudah.
+                        <h2 class="mb-4 text-theme-xl sm:text-title-sm font-bold text-white text-center tracking-tight">
+                            Elevate Your Restaurant Experience
+                        </h2>
+                        <p class="text-center text-lg text-gray-300 dark:text-white/70 max-w-sm leading-relaxed">
+                            Solusi Point of Sale modern untuk restoran & kafe. Kelola pesanan, meja, dan laporan dengan efisiensi maksimal.
                         </p>
+
+                        <!-- Social Proof or Features -->
+                        <div class="mt-12 grid grid-cols-2 gap-4 w-full max-w-sm">
+                            <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500/20 text-brand-400">
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-white">Performa Cepat</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500/20 text-brand-400">
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04M12 21.355r-.334-.023a11.942 11.942 0 01-8.592-3.042 11.954 11.954 0 01-3.041-8.592c0-2.347.674-4.538 1.838-6.393L12 2.944l8.618 3.04c1.164 1.855 1.838 4.046 1.838 6.393a11.955 11.955 0 01-3.041 8.592l-.334.023z" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-medium text-white">Sistem Aman</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
