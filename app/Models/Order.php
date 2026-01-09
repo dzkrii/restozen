@@ -186,8 +186,14 @@ class Order extends Model
         ]);
 
         // Release table if dine-in
-        if ($this->table && $this->order_type === self::TYPE_DINE_IN) {
-            $this->table->release();
+        if ($this->table_id && $this->order_type === self::TYPE_DINE_IN) {
+            // Fetch the table fresh from the database to ensure it's a model instance
+            $table = Table::find($this->table_id);
+            
+            // Call release only if table exists
+            if ($table) {
+                $table->release();
+            }
         }
     }
 }

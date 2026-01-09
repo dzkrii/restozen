@@ -542,8 +542,11 @@ class OrderController extends Controller
             $order->update(['confirmed_at' => now()]);
         } elseif ($request->status === Order::STATUS_COMPLETED) {
             $order->complete();
-        } elseif ($request->status === Order::STATUS_CANCELLED && $order->table) {
-            $order->table->release();
+        } elseif ($request->status === Order::STATUS_CANCELLED && $order->table_id) {
+            $table = Table::find($order->table_id);
+            if ($table) {
+                $table->release();
+            }
         }
 
         if ($request->ajax()) {
@@ -596,8 +599,11 @@ class OrderController extends Controller
         }
 
         // Release table if occupied
-        if ($order->table) {
-            $order->table->release();
+        if ($order->table_id) {
+            $table = Table::find($order->table_id);
+            if ($table) {
+                $table->release();
+            }
         }
 
         $order->delete();
