@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         // Seed subscription plans
         $this->call([
             SubscriptionPlanSeeder::class,
+            AdminUserSeeder::class,
         ]);
     }
 }
