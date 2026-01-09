@@ -62,18 +62,11 @@
                     'capability' => 'waiter',
                 ],
                 [
-                    'name' => 'Riwayat Pesanan',
+                    'name' => 'Daftar Pesanan',
                     'path' => '/orders',
                     'icon' => 'history',
-                    'routes' => ['orders.index', 'orders.show'],
+                    'routes' => ['orders.index', 'orders.show', 'payments.create', 'payments.store'],
                     'capability' => 'orders',
-                ],
-                [
-                    'name' => 'Kasir',
-                    'path' => '/orders',
-                    'icon' => 'cashier',
-                    'routes' => ['payments.create', 'payments.store'],
-                    'capability' => 'cashier',
                 ],
             ]
         ],

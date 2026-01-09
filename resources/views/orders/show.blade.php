@@ -1,6 +1,15 @@
 <x-app-layout>
     <x-slot name="title">{{ $order->order_number }}</x-slot>
 
+    @php
+        $user = auth()->user();
+        $outlet = $user->current_outlet;
+        $userCapabilities = $outlet ? $user->capabilitiesAt($outlet) : [];
+        $isWaiter = in_array('waiter', $userCapabilities);
+        $isCashier = in_array('cashier', $userCapabilities);
+        $isKitchen = in_array('kitchen', $userCapabilities);
+    @endphp
+
     <!-- Page Header -->
     <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="flex items-center gap-3">
@@ -16,7 +25,8 @@
             </div>
         </div>
         <div class="flex items-center gap-3">
-            @if(!in_array($order->status, ['completed', 'cancelled']))
+            {{-- Tambah Item - Only for Waiter --}}
+            @if($isWaiter && !in_array($order->status, ['completed', 'cancelled']))
                 <x-ui.button href="{{ route('orders.edit', $order) }}" variant="success">
                     <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
@@ -179,87 +189,110 @@
 
         <!-- Sidebar -->
         <div class="space-y-6">
-            <!-- Status Update -->
-            @if(!in_array($order->status, ['completed', 'cancelled']))
+            {{-- Kitchen Status Update - Only for Kitchen Staff --}}
+            @if($isKitchen && in_array($order->status, ['confirmed', 'preparing']))
                 <div class="rounded-xl border border-gray-200 bg-white overflow-hidden dark:border-gray-800 dark:bg-white/[0.03]">
-                    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
-                        <h3 class="font-semibold text-gray-800 dark:text-white/90">Update Status</h3>
+                    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-800 bg-purple-50 dark:bg-purple-500/10">
+                        <h3 class="font-semibold text-purple-700 dark:text-purple-400">🍳 Kitchen</h3>
                     </div>
                     <div class="p-6 space-y-3">
-                        @php
-                            // Simplified status flow:
-                            // confirmed → preparing → ready → completed
-                            $statusFlow = [
-                                'confirmed' => ['preparing' => ['label' => 'Mulai Masak', 'color' => 'purple', 'icon' => 'fire']],
-                                'preparing' => ['ready' => ['label' => 'Siap Saji', 'color' => 'success', 'icon' => 'check']],
-                                'ready' => ['completed' => ['label' => 'Selesai', 'color' => 'success', 'icon' => 'check-circle']],
-                            ];
-                            $nextStatuses = $statusFlow[$order->status] ?? [];
-                        @endphp
-
-                        {{-- Info based on current status --}}
                         @if($order->status === 'confirmed')
                             <div class="bg-brand-50 dark:bg-brand-500/10 rounded-lg p-3 mb-3">
                                 <p class="text-sm text-brand-700 dark:text-brand-400">
                                     <svg class="size-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
-                                    Pesanan menunggu diproses oleh dapur
+                                    Pesanan baru menunggu diproses
                                 </p>
                             </div>
+                            <form action="{{ route('orders.update-status', $order) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <input type="hidden" name="status" value="preparing">
+                                <x-ui.button type="submit" variant="primary" class="w-full justify-center">
+                                    <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/>
+                                    </svg>
+                                    Mulai Masak
+                                </x-ui.button>
+                            </form>
                         @elseif($order->status === 'preparing')
                             <div class="bg-purple-50 dark:bg-purple-500/10 rounded-lg p-3 mb-3">
                                 <p class="text-sm text-purple-700 dark:text-purple-400">
                                     <svg class="size-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/>
                                     </svg>
-                                    Dapur sedang memasak pesanan ini
+                                    Sedang dimasak...
                                 </p>
                             </div>
-                        @elseif($order->status === 'ready')
-                            <div class="bg-success-50 dark:bg-success-500/10 rounded-lg p-3 mb-3">
-                                <p class="text-sm text-success-700 dark:text-success-400">
-                                    <svg class="size-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                    </svg>
-                                    Makanan siap! Proses pembayaran untuk menyelesaikan.
-                                </p>
-                            </div>
-                        @endif
-
-                        @foreach($nextStatuses as $nextStatus => $config)
                             <form action="{{ route('orders.update-status', $order) }}" method="POST">
                                 @csrf
                                 @method('PATCH')
-                                <input type="hidden" name="status" value="{{ $nextStatus }}">
-                                @if($nextStatus === 'completed' && !$order->isPaid())
-                                    {{-- If completing, suggest payment first --}}
-                                    <x-ui.button href="{{ route('payments.create', $order) }}" variant="success" class="w-full justify-center">
-                                        <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
-                                        </svg>
-                                        Proses Pembayaran & Selesai
-                                    </x-ui.button>
-                                @else
-                                    <x-ui.button type="submit" variant="primary" class="w-full justify-center">
-                                        {{ $config['label'] }}
-                                    </x-ui.button>
-                                @endif
-                            </form>
-                        @endforeach
-
-                        {{-- Cancel button --}}
-                        @if($order->status !== 'cancelled')
-                            <form action="{{ route('orders.update-status', $order) }}" method="POST" class="mt-2">
-                                @csrf
-                                @method('PATCH')
-                                <input type="hidden" name="status" value="cancelled">
-                                <button type="submit" onclick="return confirm('Yakin ingin membatalkan pesanan ini?')"
-                                    class="w-full py-2.5 bg-error-50 hover:bg-error-100 text-error-600 rounded-lg font-medium transition-colors dark:bg-error-500/10 dark:hover:bg-error-500/20 dark:text-error-400">
-                                    Batalkan Pesanan
-                                </button>
+                                <input type="hidden" name="status" value="ready">
+                                <x-ui.button type="submit" variant="success" class="w-full justify-center">
+                                    <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    Siap Saji
+                                </x-ui.button>
                             </form>
                         @endif
+                    </div>
+                </div>
+            @endif
+
+            {{-- Order Status Info - For Waiter/Cashier (read-only status) --}}
+            @if(($isWaiter || $isCashier) && !$isKitchen && !in_array($order->status, ['completed', 'cancelled']))
+                <div class="rounded-xl border border-gray-200 bg-white overflow-hidden dark:border-gray-800 dark:bg-white/[0.03]">
+                    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+                        <h3 class="font-semibold text-gray-800 dark:text-white/90">Status Pesanan</h3>
+                    </div>
+                    <div class="p-6">
+                        @if($order->status === 'confirmed')
+                            <div class="bg-brand-50 dark:bg-brand-500/10 rounded-lg p-4 text-center">
+                                <svg class="size-8 mx-auto mb-2 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <p class="text-sm font-medium text-brand-700 dark:text-brand-400">Menunggu Dapur</p>
+                                <p class="text-xs text-brand-600/70 dark:text-brand-400/70 mt-1">Pesanan sedang antri di dapur</p>
+                            </div>
+                        @elseif($order->status === 'preparing')
+                            <div class="bg-purple-50 dark:bg-purple-500/10 rounded-lg p-4 text-center">
+                                <svg class="size-8 mx-auto mb-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/>
+                                </svg>
+                                <p class="text-sm font-medium text-purple-700 dark:text-purple-400">Sedang Dimasak</p>
+                                <p class="text-xs text-purple-600/70 dark:text-purple-400/70 mt-1">Dapur sedang memproses pesanan</p>
+                            </div>
+                        @elseif($order->status === 'ready')
+                            <div class="bg-success-50 dark:bg-success-500/10 rounded-lg p-4 text-center">
+                                <svg class="size-8 mx-auto mb-2 text-success-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <p class="text-sm font-medium text-success-700 dark:text-success-400">Siap Diantar!</p>
+                                <p class="text-xs text-success-600/70 dark:text-success-400/70 mt-1">Makanan sudah siap untuk disajikan</p>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            @endif
+
+            {{-- Cancel Order - Only for Waiter --}}
+            @if($isWaiter && !in_array($order->status, ['completed', 'cancelled', 'ready']))
+                <div class="rounded-xl border border-gray-200 bg-white overflow-hidden dark:border-gray-800 dark:bg-white/[0.03]">
+                    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+                        <h3 class="font-semibold text-gray-800 dark:text-white/90">Aksi</h3>
+                    </div>
+                    <div class="p-6">
+                        <form action="{{ route('orders.update-status', $order) }}" method="POST">
+                            @csrf
+                            @method('PATCH')
+                            <input type="hidden" name="status" value="cancelled">
+                            <button type="submit" onclick="return confirm('Yakin ingin membatalkan pesanan ini?')"
+                                class="w-full py-2.5 bg-error-50 hover:bg-error-100 text-error-600 rounded-lg font-medium transition-colors dark:bg-error-500/10 dark:hover:bg-error-500/20 dark:text-error-400">
+                                Batalkan Pesanan
+                            </button>
+                        </form>
                     </div>
                 </div>
             @endif
@@ -301,9 +334,23 @@
                             Lunas
                         </div>
                     @elseif(!in_array($order->status, ['cancelled']))
-                        <x-ui.button href="{{ route('payments.create', $order) }}" variant="success" class="w-full justify-center">
-                            Proses Pembayaran
-                        </x-ui.button>
+                        @if($isCashier)
+                            {{-- Cashier can process payment --}}
+                            <x-ui.button href="{{ route('payments.create', $order) }}" variant="success" class="w-full justify-center">
+                                <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                                Proses Pembayaran
+                            </x-ui.button>
+                        @else
+                            {{-- Non-cashier sees payment status --}}
+                            <div class="bg-warning-50 text-warning-700 px-4 py-3 rounded-lg text-center font-medium dark:bg-warning-500/10 dark:text-warning-400">
+                                <svg class="size-5 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V7m0 10v1"/>
+                                </svg>
+                                Belum Dibayar
+                            </div>
+                        @endif
                     @endif
                 </div>
             </div>

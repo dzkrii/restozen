@@ -23,27 +23,56 @@ class OrderController extends Controller
         $outletId = $outlet ? $outlet->id : null;
         
         if (!$outletId) {
-             return view('orders.index', ['orders' => collect([]), 'todayOrders' => 0, 'todayRevenue' => 0, 'pendingCount' => 0]);
+             return view('orders.index', [
+                 'orders' => collect([]),
+                 'todayOrders' => 0,
+                 'todayRevenue' => 0,
+                 'pendingCount' => 0,
+                 'readyCount' => 0,
+                 'unpaidCount' => 0,
+                 'paidTodayCount' => 0,
+             ]);
         }
 
+        // Determine view mode based on user capabilities (same logic as view)
+        $user = Auth::user();
+        $userCapabilities = $outlet ? $user->capabilitiesAt($outlet) : [];
+        $isWaiter = in_array('waiter', $userCapabilities);
+        $isCashier = in_array('cashier', $userCapabilities);
+        
+        // Default: cashier view if only has cashier (no waiter), otherwise waiter view
+        $defaultView = ($isCashier && !$isWaiter) ? 'cashier' : 'waiter';
+        $viewMode = $request->get('view', $defaultView);
+        
         $query = Order::where('outlet_id', $outletId)
-            ->with(['table', 'items', 'user'])
+            ->with(['table', 'items', 'user', 'payments'])
             ->latest();
 
-        // Status filter
-        if ($request->filled('status') && $request->status !== 'all') {
-            $query->where('status', $request->status);
-        }
-
         // Date filter
-        if ($request->filled('date')) {
-            $query->whereDate('created_at', $request->date);
+        $date = $request->filled('date') ? $request->date : today()->format('Y-m-d');
+        $query->whereDate('created_at', $date);
+
+        // View-specific filtering
+        if ($viewMode === 'cashier') {
+            // Cashier view: Filter by payment status
+            $paymentFilter = $request->get('payment', 'unpaid');
+            
+            if ($paymentFilter === 'unpaid') {
+                // Orders that are not cancelled and not completed (not paid yet)
+                $query->whereNotIn('status', [Order::STATUS_CANCELLED, Order::STATUS_COMPLETED]);
+            } elseif ($paymentFilter === 'paid') {
+                // Fully paid orders (completed)
+                $query->where('status', Order::STATUS_COMPLETED);
+            }
+            // 'all' shows everything
         } else {
-            // Default to today
-            $query->whereDate('created_at', today());
+            // Waiter view: Filter by order status
+            if ($request->filled('status') && $request->status !== 'all') {
+                $query->where('status', $request->status);
+            }
         }
 
-        $orders = $query->paginate(20);
+        $orders = $query->paginate(20)->appends($request->query());
 
         // Order statistics
         $todayOrders = Order::where('outlet_id', $outletId)
@@ -56,10 +85,34 @@ class OrderController extends Controller
             ->sum('total_amount');
 
         $pendingCount = Order::where('outlet_id', $outletId)
-            ->whereIn('status', [Order::STATUS_PENDING, Order::STATUS_CONFIRMED, Order::STATUS_PREPARING])
+            ->whereIn('status', [Order::STATUS_CONFIRMED, Order::STATUS_PREPARING])
             ->count();
 
-        return view('orders.index', compact('orders', 'todayOrders', 'todayRevenue', 'pendingCount'));
+        $readyCount = Order::where('outlet_id', $outletId)
+            ->where('status', Order::STATUS_READY)
+            ->count();
+
+        // Cashier stats
+        $unpaidCount = Order::where('outlet_id', $outletId)
+            ->whereDate('created_at', today())
+            ->where('status', '!=', Order::STATUS_CANCELLED)
+            ->where('status', '!=', Order::STATUS_COMPLETED)
+            ->count();
+
+        $paidTodayCount = Order::where('outlet_id', $outletId)
+            ->whereDate('created_at', today())
+            ->where('status', Order::STATUS_COMPLETED)
+            ->count();
+
+        return view('orders.index', compact(
+            'orders',
+            'todayOrders',
+            'todayRevenue',
+            'pendingCount',
+            'readyCount',
+            'unpaidCount',
+            'paidTodayCount'
+        ));
     }
 
     /**
