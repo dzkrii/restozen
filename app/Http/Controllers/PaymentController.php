@@ -96,6 +96,11 @@ class PaymentController extends Controller
             if ($order->isPaid()) {
                 $order->update(['status' => Order::STATUS_COMPLETED, 'completed_at' => now()]);
 
+                // Mark all items as served (completed)
+                $order->items()->whereNotIn('status', ['served', 'cancelled'])->update([
+                    'status' => 'served'
+                ]);
+
                 // Release table
                 if ($order->table) {
                     $order->table->release();

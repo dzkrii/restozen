@@ -127,15 +127,16 @@
                                 <p class="font-semibold text-gray-800 dark:text-white/90">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</p>
                                 @php
                                     $itemStatusConfig = [
-                                        'pending' => 'bg-warning-50 text-warning-700 dark:bg-warning-500/15 dark:text-warning-400',
-                                        'preparing' => 'bg-purple-50 text-purple-700 dark:bg-purple-500/15 dark:text-purple-400',
-                                        'ready' => 'bg-success-50 text-success-700 dark:bg-success-500/15 dark:text-success-400',
-                                        'served' => 'bg-brand-50 text-brand-700 dark:bg-brand-500/15 dark:text-brand-400',
-                                        'cancelled' => 'bg-error-50 text-error-700 dark:bg-error-500/15 dark:text-error-400',
+                                        'pending' => ['class' => 'bg-warning-50 text-warning-700 dark:bg-warning-500/15 dark:text-warning-400', 'label' => 'Menunggu'],
+                                        'preparing' => ['class' => 'bg-purple-50 text-purple-700 dark:bg-purple-500/15 dark:text-purple-400', 'label' => 'Dimasak'],
+                                        'ready' => ['class' => 'bg-brand-50 text-brand-700 dark:bg-brand-500/15 dark:text-brand-400', 'label' => 'Siap'],
+                                        'served' => ['class' => 'bg-success-50 text-success-700 dark:bg-success-500/15 dark:text-success-400', 'label' => 'Selesai'],
+                                        'cancelled' => ['class' => 'bg-error-50 text-error-700 dark:bg-error-500/15 dark:text-error-400', 'label' => 'Batal'],
                                     ];
+                                    $itemStatus = $itemStatusConfig[$item->status] ?? ['class' => 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400', 'label' => ucfirst($item->status)];
                                 @endphp
-                                <span class="inline-block mt-1 px-2 py-0.5 rounded text-xs font-medium {{ $itemStatusConfig[$item->status] ?? 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400' }}">
-                                    {{ ucfirst($item->status) }}
+                                <span class="inline-block mt-1 px-2 py-0.5 rounded text-xs font-medium {{ $itemStatus['class'] }}">
+                                    {{ $itemStatus['label'] }}
                                 </span>
                             </div>
                         </div>

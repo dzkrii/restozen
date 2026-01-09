@@ -90,10 +90,12 @@ Route::middleware(['auth', 'verified', 'outlet.access'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | POS / Cashier - Requires cashier capability
+    | Waiter/Pelayan - Requires waiter capability
+    | - Create and manage orders
+    | - Add items to existing orders
     |--------------------------------------------------------------------------
     */
-    Route::middleware('capability:cashier')->group(function () {
+    Route::middleware('capability:waiter')->group(function () {
         Route::get('orders/create', [OrderController::class, 'create'])->name('orders.create');
         Route::get('orders/create/menu', [OrderController::class, 'selectMenu'])->name('orders.select-menu');
         Route::get('orders/create/menu/{table}', [OrderController::class, 'selectMenu'])->name('orders.select-menu.table');
@@ -103,18 +105,26 @@ Route::middleware(['auth', 'verified', 'outlet.access'])->group(function () {
         Route::get('orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
         Route::put('orders/{order}', [OrderController::class, 'update'])->name('orders.update');
         Route::delete('orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
-        
-        // Payments
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cashier/Kasir - Requires cashier capability
+    | - Process payments only
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware('capability:cashier')->group(function () {
         Route::get('orders/{order}/payment', [PaymentController::class, 'create'])->name('payments.create');
         Route::post('orders/{order}/payment', [PaymentController::class, 'store'])->name('payments.store');
     });
 
     /*
     |--------------------------------------------------------------------------
-    | Orders - Requires orders capability (view and manage orders)
+    | Orders View - Requires orders, waiter, or cashier capability
+    | - View order list and details
     |--------------------------------------------------------------------------
     */
-    Route::middleware('capability:orders,cashier')->group(function () {
+    Route::middleware('capability:orders,waiter,cashier')->group(function () {
         Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
         Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
         Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');

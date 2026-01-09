@@ -27,15 +27,20 @@ class CapabilityMiddleware
             'description' => 'Kelola area dan denah meja',
             'icon' => 'table',
         ],
+        'waiter' => [
+            'name' => 'Pelayan',
+            'description' => 'Buat pesanan baru dan tambah item',
+            'icon' => 'order',
+        ],
         'cashier' => [
             'name' => 'Kasir',
-            'description' => 'Akses POS kasir dan pembayaran',
+            'description' => 'Proses pembayaran pesanan',
             'icon' => 'cashier',
         ],
         'orders' => [
-            'name' => 'Pesanan',
-            'description' => 'Lihat dan kelola riwayat pesanan',
-            'icon' => 'order',
+            'name' => 'Riwayat Pesanan',
+            'description' => 'Lihat daftar dan detail pesanan',
+            'icon' => 'history',
         ],
         'kitchen' => [
             'name' => 'Kitchen Display',
@@ -70,20 +75,20 @@ class CapabilityMiddleware
                 'description' => 'Akses ke semua fitur kecuali pengaturan langganan',
                 'capabilities' => array_keys(self::CAPABILITIES),
             ],
-            'cashier' => [
-                'name' => 'Kasir',
-                'description' => 'Akses ke kasir dan pesanan',
-                'capabilities' => ['dashboard', 'cashier', 'orders'],
-            ],
             'waiter' => [
                 'name' => 'Pelayan',
-                'description' => 'Akses ke pesanan saja',
-                'capabilities' => ['dashboard', 'orders'],
+                'description' => 'Buat pesanan dan antar makanan',
+                'capabilities' => ['dashboard', 'waiter', 'orders'],
+            ],
+            'cashier' => [
+                'name' => 'Kasir',
+                'description' => 'Proses pembayaran',
+                'capabilities' => ['dashboard', 'cashier', 'orders'],
             ],
             'kitchen' => [
                 'name' => 'Kitchen Staff',
                 'description' => 'Akses ke kitchen display',
-                'capabilities' => ['dashboard', 'kitchen', 'orders'],
+                'capabilities' => ['dashboard', 'kitchen'],
             ],
         ];
     }
