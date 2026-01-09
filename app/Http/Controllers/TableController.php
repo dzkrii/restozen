@@ -56,7 +56,7 @@ class TableController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'table_area_id' => 'nullable|exists:table_areas,id',
+            'table_area_id' => 'required|exists:table_areas,id',
             'number' => 'required|string|max:20',
             'name' => 'nullable|string|max:255',
             'capacity' => 'required|integer|min:1|max:50',
@@ -123,7 +123,7 @@ class TableController extends Controller
         $this->authorizeOutlet($table);
 
         $validated = $request->validate([
-            'table_area_id' => 'nullable|exists:table_areas,id',
+            'table_area_id' => 'required|exists:table_areas,id',
             'number' => 'required|string|max:20',
             'name' => 'nullable|string|max:255',
             'capacity' => 'required|integer|min:1|max:50',

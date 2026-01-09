@@ -25,7 +25,7 @@
 
                 <div class="space-y-6">
                     <!-- Area -->
-                    <x-ui.select name="table_area_id" label="Area Meja" :value="old('table_area_id', request('area'))" placeholder="Tanpa Area">
+                    <x-ui.select name="table_area_id" label="Area Meja" :value="old('table_area_id', request('area'))" placeholder="Pilih Area Meja" :required="true">
                         @foreach ($areas as $area)
                             <option value="{{ $area->id }}" {{ old('table_area_id', request('area')) == $area->id ? 'selected' : '' }}>
                                 {{ $area->name }}

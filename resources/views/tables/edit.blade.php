@@ -20,13 +20,13 @@
     <!-- Form Card -->
     <div class="mx-auto max-w-2xl">
         <x-ui.card title="Informasi Meja" description="Perbarui data meja di bawah ini">
-            <form action="{{ route('tables.update', $table) }}" method="POST">
+            <form id="edit-form" action="{{ route('tables.update', $table) }}" method="POST">
                 @csrf
                 @method('PUT')
 
                 <div class="space-y-6">
                     <!-- Area -->
-                    <x-ui.select name="table_area_id" label="Area Meja" :value="$table->table_area_id" placeholder="Tanpa Area">
+                    <x-ui.select name="table_area_id" label="Area Meja" :value="$table->table_area_id" placeholder="Pilih Area Meja" :required="true">
                         @foreach ($areas as $area)
                             <option value="{{ $area->id }}" {{ old('table_area_id', $table->table_area_id) == $area->id ? 'selected' : '' }}>
                                 {{ $area->name }}
@@ -79,21 +79,19 @@
                                 </svg>
                                 Download QR
                             </x-ui.button>
-                            <form action="{{ route('tables.regenerate-qr', $table) }}" method="POST" class="inline">
-                                @csrf
-                                <x-ui.button type="submit" variant="outline" size="sm">
-                                    <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                                    </svg>
-                                    Regenerate
-                                </x-ui.button>
-                            </form>
+                            <x-ui.button type="submit" form="regenerate-qr-form" variant="outline" size="sm">
+                                <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                </svg>
+                                Regenerate
+                            </x-ui.button>
                         </div>
                     </div>
 
-                    <!-- Status -->
+                <!-- Status -->
                     <x-ui.toggle name="is_active" :checked="$table->is_active" label="Meja aktif dan dapat digunakan" />
                 </div>
+            </form>
 
                 <!-- Actions -->
                 <div class="mt-8 flex items-center justify-between border-t border-gray-200 pt-6 dark:border-gray-800">
@@ -109,11 +107,15 @@
                         </x-ui.button>
                     </form>
 
+                    <form id="regenerate-qr-form" action="{{ route('tables.regenerate-qr', $table) }}" method="POST">
+                        @csrf
+                    </form>
+
                     <div class="flex items-center gap-3">
                         <x-ui.button href="{{ route('tables.index') }}" variant="outline">
                             Batal
                         </x-ui.button>
-                        <x-ui.button type="submit" variant="primary">
+                        <x-ui.button type="submit" form="edit-form" variant="primary">
                             <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                             </svg>
@@ -121,7 +123,6 @@
                         </x-ui.button>
                     </div>
                 </div>
-            </form>
         </x-ui.card>
     </div>
 </x-app-layout>
