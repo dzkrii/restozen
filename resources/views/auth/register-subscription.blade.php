@@ -79,22 +79,8 @@
                             </p>
                         </div>
 
-                        {{-- Subscription Info --}}
-                        <div class="mb-6 p-4 rounded-xl bg-brand-50 dark:bg-brand-500/10 border border-brand-200 dark:border-brand-500/20">
-                            <div class="flex items-center gap-3">
-                                <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-lg bg-brand-100 dark:bg-brand-500/20">
-                                    <svg class="w-5 h-5 text-brand-600 dark:text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-semibold text-brand-700 dark:text-brand-400">Paket {{ ucfirst($subscriptionData['plan']) }}</p>
-                                    <p class="text-xs text-brand-600 dark:text-brand-500">
-                                        Aktif hingga {{ $subscriptionData['expires_at']->format('d M Y') }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                        {{-- Subscription Info moved to right side --}}
+
                         
                         <form method="POST" action="{{ route('register.subscription.store') }}">
                             @csrf
@@ -199,31 +185,78 @@
                 </div>
             </div>
 
-            <!-- Right Side - Branding -->
-            <div class="bg-brand-950 relative hidden h-full min-h-screen w-full items-center lg:flex lg:w-1/2 dark:bg-white/5">
-                <div class="z-1 flex w-full items-center justify-center">
-                    <!-- Grid Pattern -->
-                    <div class="absolute inset-0 opacity-10">
-                        <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="1"/>
-                                </pattern>
-                            </defs>
-                            <rect width="100%" height="100%" fill="url(#grid)" />
-                        </svg>
-                    </div>
+            <!-- Right Side - Branding & Summary -->
+            <div class="relative hidden h-auto min-h-screen w-full lg:block lg:w-1/2 bg-brand-950 dark:bg-gray-950">
+                <div class="sticky top-0 flex h-screen w-full flex-col items-center justify-center overflow-hidden">
                     
-                    <div class="flex max-w-sm flex-col items-center px-8">
-                        <div class="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-white/10 backdrop-blur">
-                            <svg class="w-12 h-12 text-success-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <!-- Background Effects -->
+                    <div class="absolute inset-0 z-0">
+                        <div class="absolute inset-0 bg-gradient-to-br from-brand-900 to-brand-950 opacity-90"></div>
+                        <!-- Pattern -->
+                        <div class="absolute inset-0 opacity-[0.03]" 
+                            style="background-image: url(&quot;data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E&quot;);">
+                        </div>
+                        <!-- Glow -->
+                        <div class="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-brand-500/20 blur-3xl"></div>
+                        <div class="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-secondary-500/20 blur-3xl"></div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="relative z-10 w-full max-w-md px-8 text-center">
+                        <div class="mb-8 inline-flex h-20 w-20 items-center justify-center rounded-2xl bg-white/10 shadow-2xl backdrop-blur-xl ring-1 ring-white/20">
+                            <svg class="h-10 w-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
                         </div>
-                        <h2 class="mb-4 text-2xl font-semibold text-white text-center">Pembayaran Berhasil!</h2>
-                        <p class="text-center text-gray-400 dark:text-white/60">
-                            Terima kasih telah berlangganan MARUPOS. Tinggal satu langkah lagi untuk mengaktifkan akun Anda!
+
+                        <h2 class="mb-4 text-3xl font-bold tracking-tight text-white">
+                            Pembayaran Berhasil!
+                        </h2>
+                        
+                        <p class="mb-8 text-lg text-brand-100/80">
+                            Terima kasih telah bergabung dengan MARUPOS.
                         </p>
+
+                        <!-- Order Summary Card -->
+                        <div class="overflow-hidden rounded-2xl bg-white/5 backdrop-blur-md ring-1 ring-white/10 text-left">
+                            <div class="p-6">
+                                <h3 class="mb-4 text-xs font-semibold uppercase tracking-wider text-brand-200/60">
+                                    Ringkasan Paket
+                                </h3>
+                                <div class="flex items-start justify-between gap-4">
+                                    <div>
+                                        <div class="text-xl font-bold text-white mb-1">
+                                            Paket {{ ucfirst($subscriptionData['plan']) }}
+                                        </div>
+                                        <div class="text-sm text-brand-100/70">
+                                            Billing {{ $subscriptionData['cycle'] ?? 'Bulanan' }}
+                                        </div>
+                                    </div>
+                                    <div class="rounded-lg bg-success-500/20 px-3 py-1 text-sm font-medium text-success-300 ring-1 ring-inset ring-success-500/30">
+                                        Lunas
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border-t border-white/5 bg-white/5 px-6 py-4">
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="text-brand-100/60">Masa Aktif Hingga</span>
+                                    <span class="font-medium text-white">
+                                        {{ $subscriptionData['expires_at']->format('d M Y') }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 flex items-center justify-center gap-4 text-xs text-brand-200/40">
+                            <div class="flex items-center gap-2">
+                                <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                </svg>
+                                <span>Pembayaran Aman</span>
+                            </div>
+                            <div class="h-1 w-1 rounded-full bg-brand-200/40"></div>
+                            <div>Dukungan 24/7</div>
+                        </div>
                     </div>
                 </div>
             </div>
