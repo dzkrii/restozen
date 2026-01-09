@@ -64,23 +64,7 @@
                         @enderror
                     </div>
 
-                    <!-- Cost Price -->
-                    <div>
-                        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                            Harga Modal (HPP)
-                        </label>
-                        <div class="relative">
-                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
-                                <span class="text-gray-500 text-sm dark:text-gray-400">Rp</span>
-                            </div>
-                            <input type="number" name="cost_price" id="cost_price" value="{{ old('cost_price', $menuItem->cost_price) }}"
-                                class="shadow-theme-xs h-11 w-full rounded-lg border border-gray-300 bg-transparent py-2.5 pl-10 pr-4 text-sm text-gray-800 placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/10 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90"
-                                min="0" step="100">
-                        </div>
-                        @error('cost_price')
-                            <p class="mt-1.5 text-sm text-error-500">{{ $message }}</p>
-                        @enderror
-                    </div>
+
 
                     <!-- Description -->
                     <div class="md:col-span-2">
@@ -128,35 +112,7 @@
                         @enderror
                     </div>
 
-                    <!-- Stock Management -->
-                    <div class="md:col-span-2 rounded-xl border border-gray-200 bg-gray-50 p-5 dark:border-gray-800 dark:bg-gray-900">
-                        <h3 class="font-medium text-gray-800 dark:text-white/90 mb-4">Manajemen Stok</h3>
 
-                        <div class="mb-4">
-                            <label class="flex items-center cursor-pointer">
-                                <input type="checkbox" name="track_stock" id="track_stock" value="1"
-                                    {{ old('track_stock', $menuItem->track_stock) ? 'checked' : '' }}
-                                    class="sr-only peer"
-                                    onchange="toggleStockInput()">
-                                <div class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-brand-500 peer-focus:ring-4 peer-focus:ring-brand-500/20 dark:bg-gray-700 transition-colors">
-                                    <div class="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow-md transition-transform peer-checked:translate-x-5"></div>
-                                </div>
-                                <span class="ml-3 text-sm text-gray-700 dark:text-gray-400">Lacak stok menu ini</span>
-                            </label>
-                        </div>
-
-                        <div id="stock-input" class="{{ old('track_stock', $menuItem->track_stock) ? '' : 'hidden' }}">
-                            <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                Jumlah Stok
-                            </label>
-                            <input type="number" name="stock" id="stock" value="{{ old('stock', $menuItem->stock ?? 0) }}"
-                                class="shadow-theme-xs h-11 w-32 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/10 focus:outline-hidden dark:border-gray-700 dark:bg-gray-800 dark:text-white/90"
-                                min="0">
-                            @error('stock')
-                                <p class="mt-1.5 text-sm text-error-500">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
 
                     <!-- Status -->
                     <div class="md:col-span-2 flex flex-wrap gap-6">
@@ -197,15 +153,6 @@
             }
         }
 
-        function toggleStockInput() {
-            const checkbox = document.getElementById('track_stock');
-            const stockInput = document.getElementById('stock-input');
 
-            if (checkbox.checked) {
-                stockInput.classList.remove('hidden');
-            } else {
-                stockInput.classList.add('hidden');
-            }
-        }
     </script>
 </x-app-layout>
