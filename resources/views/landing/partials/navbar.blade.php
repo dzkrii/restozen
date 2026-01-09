@@ -11,8 +11,8 @@
     {{-- Main Navbar --}}
     <nav class="flex items-center justify-between w-full py-4 px-6 md:px-16 lg:px-24 xl:px-32 backdrop-blur-md bg-white/95 dark:bg-gray-900/95 text-gray-700 dark:text-gray-300 text-theme-sm border-b border-gray-200 dark:border-gray-800 shadow-theme-xs">
         <a href="/" class="flex items-center gap-3">
-            <img src="{{ asset('images/marupos-logo.png') }}" alt="MARUPOS Logo" class="h-9 w-auto dark:hidden">
-            <img src="{{ asset('images/marupos-logo-white.png') }}" alt="MARUPOS Logo" class="h-9 w-auto hidden dark:block">
+            <img src="{{ asset('images/marupos-logo.png') }}" alt="MARUPOS Logo" class="h-12 w-auto dark:hidden">
+            <img src="{{ asset('images/marupos-logo-white.png') }}" alt="MARUPOS Logo" class="h-12 w-auto hidden dark:block">
         </a>
 
         {{-- Desktop Menu --}}
