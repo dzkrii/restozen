@@ -530,6 +530,11 @@ class OrderController extends Controller
             'status' => 'required|in:pending,confirmed,preparing,ready,served,completed,cancelled',
         ]);
 
+        // Load table relationship if not loaded
+        if (!$order->relationLoaded('table')) {
+            $order->load('table');
+        }
+
         $order->update(['status' => $request->status]);
 
         // Handle status-specific actions
