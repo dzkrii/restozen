@@ -34,7 +34,7 @@ class DashboardController extends Controller
             'revenue_growth' => 0,
             'monthly_sales' => [],
             'months' => [],
-            'monthly_target' => 20000000, // Example target: 20 Million
+
         ];
 
         if ($outlet) {

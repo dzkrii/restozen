@@ -1,7 +1,7 @@
 @props(['stats'])
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6">
-    <!-- Metric Item -->
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 md:gap-6">
+    <!-- Total Revenue -->
     <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
         <div class="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
             <svg class="fill-gray-800 dark:fill-white/90" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <!-- Metric Item -->
+    <!-- Total Orders -->
     <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
         <div class="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
             <svg class="fill-gray-800 dark:fill-white/90" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -58,6 +58,36 @@
                 {{ number_format(abs($stats['orders_growth']), 1) }}%
             </span>
             @endif
+        </div>
+    </div>
+
+    <!-- Today's Revenue -->
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
+        <div class="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
+            <svg class="fill-gray-800 dark:fill-white/90" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21ZM5 5H19V19H5V5ZM7 11H17V13H7V11ZM7 7H17V9H7V7ZM7 15H14V17H7V15Z" fill="currentColor"/>
+            </svg>
+        </div>
+        <div class="flex items-end justify-between mt-5">
+            <div>
+                <span class="text-sm text-gray-500 dark:text-gray-400">Pendapatan Hari Ini</span>
+                <h4 class="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">Rp {{ number_format($stats['today_revenue'], 0, ',', '.') }}</h4>
+            </div>
+        </div>
+    </div>
+
+    <!-- Today's Orders -->
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
+        <div class="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
+             <svg class="fill-gray-800 dark:fill-white/90" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19ZM17 17H7V15H17V17ZM17 13H7V11H17V13ZM17 9H7V7H17V9Z" fill="currentColor"/>
+            </svg>
+        </div>
+        <div class="flex items-end justify-between mt-5">
+            <div>
+                <span class="text-sm text-gray-500 dark:text-gray-400">Pesanan Hari Ini</span>
+                <h4 class="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">{{ number_format($stats['today_orders']) }}</h4>
+            </div>
         </div>
     </div>
 </div>

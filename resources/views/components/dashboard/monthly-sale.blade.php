@@ -30,7 +30,7 @@
                     enabled: false
                 },
             },
-            colors: ['#FF5733'], // Brand color or similar
+            colors: ['#10B981'], // Brand color (Teal)
             dataLabels: {
                 enabled: false,
             },
