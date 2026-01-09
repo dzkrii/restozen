@@ -217,7 +217,7 @@
         </nav>
 
         <!-- User Capabilities Info (for debugging/transparency) -->
-        <div x-show="$store.sidebar.isExpanded || $store.sidebar.isHovered || $store.sidebar.isMobileOpen" 
+        <!-- <div x-show="$store.sidebar.isExpanded || $store.sidebar.isHovered || $store.sidebar.isMobileOpen" 
             x-transition 
             class="mb-4">
             @if($outlet)
@@ -232,7 +232,7 @@
                     </p>
                 </div>
             @endif
-        </div>
+        </div> -->
 
         <!-- Sidebar Widget (Outlet Switcher) -->
         <div x-show="$store.sidebar.isExpanded || $store.sidebar.isHovered || $store.sidebar.isMobileOpen" 
