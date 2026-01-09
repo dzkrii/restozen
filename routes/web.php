@@ -135,8 +135,19 @@ Route::middleware(['auth', 'verified', 'outlet.access'])->group(function () {
     Route::middleware('capability:orders,waiter,cashier')->group(function () {
         Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
         Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
-        Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
         Route::get('orders/{order}/receipt', [OrderController::class, 'receipt'])->name('orders.receipt');
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Order Status Updates - Requires kitchen, waiter, or cashier capability
+    | - Kitchen: confirmed → preparing → ready
+    | - Waiter: ready → completed (served)
+    | - Cashier: any status for payment processing
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware('capability:kitchen,waiter,cashier')->group(function () {
+        Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
     });
 
     /*
